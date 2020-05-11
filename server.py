@@ -9,13 +9,13 @@
 import trio
 from trio_websocket import serve_websocket, ConnectionClosed
 
-connections = 0
-messages = 0
+websockets_connected = 0
+number_of_messages = 0
 
 
 async def echo_server(request):
-    global connections
-    global messages
+    global websockets_connected
+    global number_of_messages
 
     ws = await request.accept()
     connections += 1
@@ -30,8 +30,8 @@ async def echo_server(request):
 
 
 async def status_printer():
-    global connections
-    global messages
+    global websockets_connected
+    global number_of_messages
     while True:
         messages_before_sleep = messages
         await trio.sleep(1)
