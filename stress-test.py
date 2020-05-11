@@ -1,15 +1,23 @@
 #!/usr/bin/env python
+description = """Stress utility for testing web-sockets servers.
+You would probably need to increase number of open files/sockets allowed, please run
+ 
+    ulimit -n 65535
+
+Google 'ulimit -n' if got problems
+"""
+
 import trio
 from trio_websocket import open_websocket_url
 import argparse
 import logging
 
 # define command-line arguments
-parser = argparse.ArgumentParser(description='web-sockets stress test')
+parser = argparse.ArgumentParser(description="Stress utility for testing web-sockets servers.")
 parser.add_argument('-c', '--connections', type=int, help='number of connections', default=1000)
 parser.add_argument('-m', '--messages', type=int, help='number of messages to pass via every connection',
                     default=100)
-parser.add_argument('target', type=str, help='target web-server address')
+parser.add_argument('target', type=str, help='target web-server address, like "ws://127.0.0.1:8000"')
 args = parser.parse_args()
 
 url = args.target
@@ -52,6 +60,7 @@ async def main():
         for _ in range(number_of_connections):
             nursery.start_soon(send_m_messages, number_of_messages)
 
+print(description)
 trio.run(main)
 
 

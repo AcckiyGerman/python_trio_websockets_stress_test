@@ -1,4 +1,11 @@
 #!/usr/bin/env python
+""" You would probably need to increase number of files/sockets allowed to be opened:
+ ulimit -n 65535
+
+# run it before running the program,
+# google it, if got problems
+"""
+
 import trio
 from trio_websocket import serve_websocket, ConnectionClosed
 
