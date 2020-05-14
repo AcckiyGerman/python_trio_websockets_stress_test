@@ -18,25 +18,25 @@ async def echo_server(request):
     global number_of_messages
 
     ws = await request.accept()
-    connections += 1
+    websockets_connected += 1
     while True:
         try:
             message = await ws.get_message()
             await ws.send_message(message)
-            messages += 1
+            number_of_messages += 1
         except ConnectionClosed:
             break
-    connections -= 1
+    websockets_connected -= 1
 
 
 async def status_printer():
     global websockets_connected
     global number_of_messages
     while True:
-        messages_before_sleep = messages
+        messages_before_sleep = number_of_messages
         await trio.sleep(1)
-        messages_per_second = messages - messages_before_sleep
-        print(f'{connections=}, {messages_per_second=}')
+        messages_per_second = number_of_messages - messages_before_sleep
+        print(f'{websockets_connected=}, {messages_per_second=}')
 
 
 async def main():

@@ -1,10 +1,7 @@
 #!/usr/bin/env python
-description = """Stress utility for testing web-sockets servers.
-You would probably need to increase number of open files/sockets allowed, please run
- 
-    ulimit -n 65535
-
-Google 'ulimit -n' if got problems
+description = """Stress utility to test web-sockets servers.
+If you got 'too many open files error', run:
+    ulimit -n 65535   # if fail to set up ulimit, google it
 """
 
 import trio
@@ -78,11 +75,12 @@ async def main():
             nursery.start_soon(send_m_messages, number_of_messages_to_send_per_connection)
 
 print(description)
+print('Running stress-test:')
+print(f'- connections             = {number_of_connections_to_create}')
+print(f'- messages per connection = {number_of_messages_to_send_per_connection}')
 trio.run(main)
 
-
-print(f'connections             = {number_of_connections_to_create}')
-print(f'messages per connection = {number_of_messages_to_send_per_connection}')
+print("Report:")
 print(f'fail to connect         = {failed_connections_counter}')
 print(f'lost connections        = {lost_connections_counter}')
 print(f'messages sent           = {msg_sent}')
